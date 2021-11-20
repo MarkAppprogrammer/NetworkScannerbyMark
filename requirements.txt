@@ -1,0 +1,3 @@
+scapy==2.4.5
+sys==3.9.2
+subprocess==3.5.4
