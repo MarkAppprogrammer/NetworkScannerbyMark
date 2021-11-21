@@ -49,13 +49,16 @@ def webservertests():
 	sleep(0.5)
 	print("[*] Starting network tests")
 	sleep(0.5)
+	print("[*] Acessing Website..")
+	sleep(0.5)
 	print("[*] Starting gobuster...")
 	wordlistlocation = input("[*] Where is the wordlist you want to use: ")
-	command = "gobuster -u " + IP + " -w " + wordlistlocation #EDIT GOBUSTER COMMAND
+	command = "gobuster -u " + IP + " -w " + wordlistlocation + ' -s "204,301,302,307,401,403"' #EDIT GOBUSTER COMMAND
 	sys.stdout.flush()
 	p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 	(output, err) = p.communicate()
 	newoutput = str(output, 'UTF-8')
+	homescreen()
 
 def nmapscan():
 	#asks for IP 
@@ -80,7 +83,23 @@ def nmapscan():
 
 def basicostests():
 	sleep(0.5)
-	print("[*] Not redy yet, Check agian later")
+	#get Ip
+	IPadders = input("[*] Enter IP: ")
+	
+	#choses
+	sleep(0.5)
+	print("[*] Which would you like to check for:")
+	print("1-> mitm(man in the middle) ")
+	print("2-> Dos(Denial of service) ")
+	inputchoice = input("[*] Chose 1 or 2: ")
+	if (inputchoice == "1"):
+		sleep(0.5)
+		print("[*] Starting mitm...")
+	if (inputchoice == "2"):
+		sleep(0.5)
+		print("[*] Starting Dos...")
+		sleep(0.5)
+		print("[*] Chceking if port 53")
 	homescreen()
 	
 def basicnettests():
@@ -102,7 +121,7 @@ def basicwebtests():
 			send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
 			print("[*] Port 80 is Open")
 			print("[*] Possibly a web server running on " + IPadders)
-			homescreen()
+			webservertests()
 		elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
 			print ("[*] Port 80 is closed, trying port 443")
 			dst_port = 443
