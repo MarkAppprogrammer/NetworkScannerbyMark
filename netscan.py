@@ -42,6 +42,10 @@ port80open = False
 		
 
 def webservertests():
+	#asks for IP 
+	IP = input("[*] Enter IP: ")
+	dst_ip = ""
+	dst_ip = IP
 	sleep(0.5)
 	print("[*] Starting network tests")
 	sleep(0.5)
@@ -54,6 +58,11 @@ def webservertests():
 	newoutput = str(output, 'UTF-8')
 
 def nmapscan():
+	#asks for IP 
+	IP = input("[*] Enter IP: ")
+	dst_ip = ""
+	dst_ip = IP
+	sleep(0.5)
 	print("[*] Using nmap to scan for vunls...")
 	sleep(0.5)
 	print("[*] This may take some time...")
@@ -81,29 +90,33 @@ def basicnettests():
 
 def basicwebtests():
 	#sending packets
+	#asks for IP 
+	IPadders = input("[*] Enter IP: ")
+	dst_ip = IPadders
+	dst_port = 80
+	sleep(0.5)
+	print("[*] Checking port vulns using scapy...")
 	tcp_connect_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
 	if(tcp_connect_scan_resp.haslayer(TCP)):
 		if(tcp_connect_scan_resp.getlayer(TCP).flags == 0x12):
 			send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
 			print("[*] Port 80 is Open")
-			sleep(0.5)
-			print("[*] Possibly a web server running on " + IP)
-			webservertests()
+			print("[*] Possibly a web server running on " + IPadders)
+			homescreen()
 		elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
 			print ("[*] Port 80 is closed, trying port 443")
 			dst_port = 443
 			tcp_connect_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="S"),timeout=10)
 			if(tcp_connect_scan_resp.haslayer(TCP)):
-				if(tcp_connect_scan_resp.getlayer(TCP).flags == 0x12):
-					send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
-					print("[*] Port 443 is Open")
-					sleep(0.5)
-					print("[*] Possibly a web server running on " + IP)
-					webservertests()
-				elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
-					print ("[*] Both Port 80 and Pory 443 are closed on " + IP)
-					sleep(0.5) 
-					homescreen()
+					if(tcp_connect_scan_resp.getlayer(TCP).flags == 0x12):
+							send_rst = sr(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port,flags="AR"),timeout=10)
+							print("[*] Port 443 is Open")
+							sleep(0.5)
+							print("[*] Possibly a web server running on " + IPadders)
+							webservertests()
+					elif (tcp_connect_scan_resp.getlayer(TCP).flags == 0x14):
+							print ("[*] Both Port 80 and Pory 443 are closed on " + IPadders)
+							homescreen()
 
 
 #some design stuff
@@ -137,16 +150,11 @@ def homescreen():
 		homescreen()
 			
 		
-#asks for IP 
-IP = input("[*]Enter IP: ")
-dst_ip = ""
-IP = dst_ip
-sleep(0.5)
+
 
 #check interface 
 print("[*] What interface are you using?")
 interface = input("[*] Interface: ")
-print("[*] Checking port vulns using scapy...")
 sleep(0.5)
 homescreen()
 
