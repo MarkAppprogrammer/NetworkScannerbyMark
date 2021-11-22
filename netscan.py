@@ -48,7 +48,7 @@ port80open = False
 
 def webservertests():
 	#asks for IP 
-	IP = input("[*] Enter IP: ")
+	IP = input("[*] Enter IP of target: ")
 	dst_ip = ""
 	dst_ip = IP
 	sleep(0.5)
@@ -325,7 +325,7 @@ def webservertests():
 
 def nmapscan():
 	#asks for IP 
-	IP = input("[*] Enter IP: ")
+	IP = input("[*] Enter IP of target: ")
 	dst_ip = ""
 	dst_ip = IP
 	sleep(0.5)
@@ -353,7 +353,7 @@ def basicostests():
 def basicnettests():
 	sleep(0.5)
 	#get Ip
-	IPadders = input("[*] Enter IP of Target: ")
+	IPadders = input("[*] Enter IP of gateway: ")
 	#choses
 	sleep(0.5)
 	print("[*] Which would you like to check for:")
@@ -469,7 +469,7 @@ def networkscanner():
 	print("""
 	Scanning %s
 	PORT:	STATUS:   SERVICE:
-	%s      %s	FTP
+	%s      %s	      FTP
 	%s      %s        FTP
 	%s      %s        SSH
 	%s      %s        SMTP
