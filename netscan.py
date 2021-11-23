@@ -463,9 +463,9 @@ def networkscanner():
 				dst_ports_status[dst_ports.index(port)] = False
 	for status in dst_ports_status:
 		if(status == True):
-			status = "Open"
+			dst_ports_status[dst_ports_status.index(status)] = "Open"
 		if(status == False):
-			status = "Closed"
+			dst_ports_status[dst_ports_status.index(status)] = "Closed"
 	print("""
 	Scanning %s
 	PORT:	STATUS:   SERVICE:
