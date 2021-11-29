@@ -23,3 +23,5 @@ To not have to run the python file with sudo privallges every time do:
 setcap cap_net_raw=eip /usr/bin/pythonX.X
 setcap cap_net_raw=eip /usr/bin/tcpdump
 ```
+USE FOR EDUCATION PURPOSES ONLY
+Not responsible for damge done using this tool.
