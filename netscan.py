@@ -316,31 +316,32 @@ def webservertests():
 		print ("{}".format(newoutput))
 		sleep(0.5)
 	elif (inputoption == "3"):
+		#expermient 
 		#asks for stuff
-		sleep(0.5)
-		subject = input("[*] Enter the Subject: ")
-		sleep(0.5)
-		body = input("[*] Enter the body: ")
-		sleep(0.5)
-		username = input("[*] Enter your username: ")
-		sleep(0.5)
-		password = input("[*] Enter your password: ")
-		sleep(0.5)
-		toemail = input("[*] Enter email of who you want to send it to:")
-		message = f'Subject: {subject}\n\n{body}'
-
-		#server stuff
- 		server=smtplib.SMTP_SSL('smtp.gmail.com', 465)
-		server.login(username, password)
-		
-		#server send email
-		server.sendmail(
-			username,
-			toemail,
-			message)
-
-		#end it 
-		server.quit()
+#		sleep(0.5)
+#		subject = input("[*] Enter the Subject: ")
+#		sleep(0.5)
+#		body = input("[*] Enter the body: ")
+#		sleep(0.5)
+#		username = input("[*] Enter your username: ")
+#		sleep(0.5)
+#		password = input("[*] Enter your password: ")
+#		sleep(0.5)
+#		toemail = input("[*] Enter email of who you want to send it to:")
+#		message = f'Subject: {subject}\n\n{body}'
+#
+#		#server stuff
+# 		server=smtplib.SMTP_SSL('smtp.gmail.com', 465)
+#		server.login(username, password)
+#		
+#		#server send email
+#		server.sendmail(
+#			username,
+#			toemail,
+#			message)
+#
+#		#end it 
+#		server.quit()
 	else:
 		sleep(0.5)
 		print("[*] Incorecct option, logging out")
