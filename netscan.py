@@ -24,7 +24,10 @@
 #  use for edu purposes only
 #  made by MarkApppprogammer
 #
-#
+#If you have an error using scapy 
+#cd /usr/lib/x86_64-linux-gnu/ or cd /usr/lib
+#ln -s -f libc.a liblibc.a
+
 
 #imports
 from time import sleep
@@ -34,8 +37,8 @@ from scapy.all import *
 import scapy.all as scapy
 import mechanize
 import itertools
-import fileinput
-import smtplib
+import webbrowser
+
 
 #vars
 src_port = 10000 #CHANGE THIS
@@ -316,24 +319,25 @@ def webservertests():
 		print ("{}".format(newoutput))
 		sleep(0.5)
 	elif (inputoption == "3"):
-		#expermient 
 		#asks for stuff
-#		sleep(0.5)
-#		subject = input("[*] Enter the Subject: ")
-#		sleep(0.5)
-#		body = input("[*] Enter the body: ")
-#		sleep(0.5)
-#		username = input("[*] Enter your username: ")
-#		sleep(0.5)
-#		password = input("[*] Enter your password: ")
-#		sleep(0.5)
+		sleep(0.5)
+		subject = input("[*] Enter the Subject: ")
+		sleep(0.5)
+		body = input("[*] Enter the body: ")
+		sleep(0.5)
+		username = input("[*] Enter your username: ")
+		sleep(0.5)
+		password = input("[*] Enter your password: ")
+		sleep(0.5)
+		homescreen()
+#		Expermient
 #		toemail = input("[*] Enter email of who you want to send it to:")
 #		message = f'Subject: {subject}\n\n{body}'
 #
 #		#server stuff
 # 		server=smtplib.SMTP_SSL('smtp.gmail.com', 465)
 #		server.login(username, password)
-#		
+#	
 #		#server send email
 #		server.sendmail(
 #			username,
@@ -369,9 +373,26 @@ def nmapscan():
 	print ("{}".format(newoutput))
 	homescreen()
 
-def basicostests():
+def basicinformationgathering():
 	sleep(0.5)
-	print("[*] Not redy yet, Check agian later")
+	firstname = input("[*] Enter First name of target: ")
+	sleep(0.5)
+	lastname = input("[*] Enter Last name of target: ")
+	sleep(0.5)
+	city = input("[*] Enter city of target (only one space only): ")
+	sleep(0.5)
+	state = input("[*] Enter state of target ex:(CA): ")
+	baseurl = "https://nuwber.com/search?location="
+	space = "%20"
+	city.replace(" ", "%20")
+	city = city + ","
+	fullname = firstname + "%20" + lastname
+	fullname.replace(" ", "%20")
+
+	#finalurl
+	finalurl = baseurl + city + space + state + "&name=" + fullname
+	print(f"Opening: ('{finalurl}')")
+	webbrowser.open(finalurl)
 	homescreen()
 
 
@@ -576,7 +597,7 @@ print("")
 def homescreen():
 	print("[*] What tests would you like to do: ")
 	print("1-> webtests")
-	print("2-> osrelatedtests")
+	print("2-> Information Gathering ")
 	print("3-> networktests")
 	print("4-> run a nmap scan")
 	print("5-> run a network scan")
@@ -584,7 +605,7 @@ def homescreen():
 	if (testtype == "1"):
 		basicwebtests()
 	elif (testtype == "2"):
-		basicostests()
+		basicinformationgathering()
 	elif (testtype == "3"):
 		basicnettests()
 	elif (testtype == "4"):
