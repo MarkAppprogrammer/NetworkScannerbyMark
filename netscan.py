@@ -38,6 +38,9 @@ import scapy.all as scapy
 import mechanize
 import itertools
 import webbrowser
+from tqdm import tqdm
+from random import randrange
+
 
 
 #vars
@@ -563,36 +566,52 @@ def basicwebtests():
 
 
 #some design stuff
-print(" _   _      _   ____")                  
-print("| \ | | ___| |_/ ___|  ___ __ _ _ __  ")
-print("|  \| |/ _ \ __\___ \ / __/ _` | '_ \ ")
-print("| |\  |  __/ |_ ___) | (_| (_| | | | | ")
-print("|_| \_|\___|\__|____/ \___\__,_|_| |_| ")
+val = randrange(20)
+print(val)
+if (val < 10):
+	print(" _   _      _   ____")                  
+	print("| \ | | ___| |_/ ___|  ___ __ _ _ __  ")
+	print("|  \| |/ _ \ __\___ \ / __/ _` | '_ \ ")
+	print("| |\  |  __/ |_ ___) | (_| (_| | | | | ")
+	print("|_| \_|\___|\__|____/ \___\__,_|_| |_| ")
 
-print('')
-print('                    _                   _')
-print('                  /_ /|               /_ /|')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                 |  | |              |  | |')
-print('                +|  |,"--------------|  |+"')
-print('              ,"                        ,"|')
-print('            ,"                        ,"  |')
-print('          ,"                        ,"    |')
-print('        ,"                        ,"      |')
-print('        +-------------------------+       |')
-print('        |                         |      ,"')
-print('        |                         |    ,"')
-print('        |                         |  ,"')
-print('        |                         |,"')
-print("        +-------------------------+")
+	print('')
+	print('                    _                   _')
+	print('                  /_ /|               /_ /|')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                 |  | |              |  | |')
+	print('                +|  |,"--------------|  |+"')
+	print('              ,"                        ,"|')
+	print('            ,"                        ,"  |')
+	print('          ,"                        ,"    |')
+	print('        ,"                        ,"      |')
+	print('        +-------------------------+       |')
+	print('        |                         |      ,"')
+	print('        |                         |    ,"')
+	print('        |                         |  ,"')
+	print('        |                         |,"')
+	print("        +-------------------------+")
 
-print("")
+	print("")
+else:
+	print(" _   _  _         _     ____      ___")                  
+	print("| \ | ||  \\     /| |   / /\\ \\    | --| ")
+	print("|  \| || | \\   / | |  / /__\\ \\   | --| ")
+	print("| |\  || |  \\_/  | | / /____\\ \\  | |")
+	print("|_| \_||_|       |_|/_/      \\_\\ |_|  ")
+	
+	print("")
+	print("NMAP PROJECT INTGRATED")
+	print("")
 
+for a in tqdm (range(9000000), desc="Loading Resources....", ncols=100):
+	
+	pass
 #home function
 def homescreen():
 	print("[*] What tests would you like to do: ")
