@@ -58,7 +58,7 @@ def webservertests():
 	dst_ip = ""
 	dst_ip = IP
 	sleep(0.5)
-	print("[*] Starting network tests")
+	print("[*] Starting webserver tests")
 	sleep(0.5)
 	print("[*] Acessing Website..")
 	sleep(0.5)
@@ -74,7 +74,7 @@ def webservertests():
 	print("[*] What would you like to do next?")
 	print("1-> brute force login")
 	print("2-> upload a reverse shell")
-	print("3-> Philsing email")
+	print("3-> Code Injections")
 	inputoption = input("[*] Option: ")
 	if (inputoption == "1"):
 		sleep(0.5)
@@ -323,32 +323,17 @@ def webservertests():
 		sleep(0.5)
 	elif (inputoption == "3"):
 		#asks for stuff
-		sleep(0.5)
-		subject = input("[*] Enter the Subject: ")
-		sleep(0.5)
-		body = input("[*] Enter the body: ")
-		sleep(0.5)
-		username = input("[*] Enter your username: ")
-		sleep(0.5)
-		password = input("[*] Enter your password: ")
-		sleep(0.5)
+		print("[*] What type of injection would you like to do?")
+		print("1-> SQL injection")
+		print("2-> XSS")
+		answer = input("[*] Option: ")
+		if (1 == int(answer)):
+			homescreen()
+		elif (2 == int(answer)):
+			homescreen()
+	
 		homescreen()
-#		Expermient
-#		toemail = input("[*] Enter email of who you want to send it to:")
-#		message = f'Subject: {subject}\n\n{body}'
-#
-#		#server stuff
-# 		server=smtplib.SMTP_SSL('smtp.gmail.com', 465)
-#		server.login(username, password)
-#	
-#		#server send email
-#		server.sendmail(
-#			username,
-#			toemail,
-#			message)
-#
-#		#end it 
-#		server.quit()
+
 	else:
 		sleep(0.5)
 		print("[*] Incorecct option, logging out")
