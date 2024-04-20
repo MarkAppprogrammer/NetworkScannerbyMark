@@ -1,7 +1,7 @@
 # NetworkScannerbyMark
 Using multiple tools scan a network for vulns 
 <br>
-THIS IS STILL IN A MAKING PROGESS, IT IS NOT YET FINSHED
+THIS IS STILL IN A MAKING PROGRESS, IT IS NOT YET FINISHED
 <br>
 Run 
 ```
@@ -18,7 +18,7 @@ and more coming soon<br>
 
 Also you need nmap, gobuster, and sudo privalges to use scrapy.
 
-To not have to run the python file with sudo privallges every time do:
+To not have to run the python file with sudo privileges every time do:
 ```
 setcap cap_net_raw=eip /usr/bin/pythonX.X
 setcap cap_net_raw=eip /usr/bin/tcpdump
